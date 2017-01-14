@@ -51,14 +51,6 @@ public class JBench {
 		frame.setSize(400, 400);
 		frame.setResizable(false);
 
-		/*
-		 * startBenchmark = new JButton("Start Benchmark"); stopBenchmark = new
-		 * JButton("Stop benchmark");
-		 * 
-		 * editorPane = new JEditorPane(); groupLayout = new
-		 * GroupLayout(frame.getContentPane());
-		 */
-
 		startBenchmark = new JButton("Start Benchmark");
 		stopBenchmark = new JButton("Stop Benchmark");
 
@@ -72,6 +64,12 @@ public class JBench {
 				startBenchmark.setEnabled(true);
 				stopBenchmark.setEnabled(false);
 
+				try {
+					editorPane.getDocument().remove(0, editorPane.getDocument().getLength());
+				} catch (BadLocationException e) {
+					e.printStackTrace();
+				}
+
 			}
 		});
 
@@ -79,6 +77,13 @@ public class JBench {
 			@Override
 			public void actionPerformed(ActionEvent event) {
 				workerThreads.clear();
+
+				try {
+					editorPane.getDocument().remove(0, editorPane.getDocument().getLength());
+				} catch (BadLocationException e) {
+					e.printStackTrace();
+				}
+
 				writeString("Detected " + processorCores + " CPU cores.");
 
 				for (int i = 0; i < processorCores; i++) {
@@ -126,7 +131,7 @@ public class JBench {
 		Document doc = editorPane.getDocument();
 
 		try {
-			doc.insertString(doc.getLength(), "\n " + text, new SimpleAttributeSet());
+			doc.insertString(doc.getLength(), " " + text + "\n", new SimpleAttributeSet());
 		} catch (BadLocationException e) {
 			e.printStackTrace();
 		}
@@ -149,6 +154,7 @@ public class JBench {
 			stopBenchmark.setEnabled(false);
 			startBenchmark.setEnabled(true);
 			threadsFinished = 0;
+
 		}
 	}
 
